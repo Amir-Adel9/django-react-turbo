@@ -1,0 +1,13 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "uv run python manage.py runserver 0.0.0.0:8000",
+    "migrate": "uv run python manage.py migrate --noinput",
+    "gen-schema": "uv run python manage.py spectacular --file openapi.yml",
+    "build": "echo no build",
+    "lint": "echo no lint",
+    "check-types": "echo no check-types"
+  }
+}

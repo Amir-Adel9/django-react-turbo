@@ -1,0 +1,22 @@
+{
+  "name": "@digisay/api-contract",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "generate": "openapi-typescript ./openapi.yml -o ./src/generated/schema.d.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "openapi-typescript": "^7.0.0",
+    "typescript": "5.9.2"
+  }
+}
