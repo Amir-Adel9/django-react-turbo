@@ -6,5 +6,6 @@ class UsersConfig(AppConfig):
     name = 'users'
 
     def ready(self):
-        from users.management.commands.seed_admin import run_seed_admin
-        run_seed_admin()
+        # Seed admin is handled via management command in Docker CMD
+        # Don't run during app initialization to avoid errors before migrations
+        pass

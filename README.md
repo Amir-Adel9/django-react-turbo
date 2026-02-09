@@ -1,129 +1,146 @@
-# Turborepo starter
+# DigiSay Task Manager
 
-This Turborepo starter is maintained by the Turborepo core team.
+Monorepo: **API** (Django + PostgreSQL) and **Web** (React + Vite). No env files are required for a quick run; sensible defaults are built in.
 
-## Using this example
+## Table of contents
 
-Run the following command:
+- [Live Demo](#live-demo)
+- [Principles](#principles)
+- [Technical Decisions](#technical-decisions--justifications)
+- [Scope](#scope)
+- [Requirements](#requirements)
+- [Package manager](#package-manager)
+- [Setup and run](#setup-and-run)
+- [Testing](#testing)
+
+## Live Demo
+
+> ⚠️ **Note:** This demo is served over **HTTP** not **HTTPS**. 
+> Some platforms (including GitHub) may try to auto-upgrade links to HTTPS.
+> <br> If the link doesn't load when clicked, **remove the `s` from `https`** in the address bar.
+
+**[Live Demo](http://srv989705.hstgr.cloud:8000/)** — Deployed on my personal VPS. Try it out.
+
+## Principles
+
+- **Monorepo:** [Turborepo](https://turbo.build/repo) with `apps/api` (Django + PostgreSQL), `apps/web` (React + Vite), and `packages/api-contract` (OpenAPI schema and generated types for the frontend).
+- **Auth:** Cookie-based sessions only: httpOnly `access_token` and `refresh_token`; refresh path-restricted; no auth state in `localStorage`.
+- **Security:** The project uses a **Dual-Token Rotation** strategy with **httpOnly** cookies: access and refresh tokens are stored only in httpOnly cookies, the refresh token is path-scoped to `/api/auth/refresh` and rotated on refresh; no tokens in `localStorage` or client-side JS.
+- **Contract:** API surface is described by OpenAPI; the web app uses `openapi-fetch` and types generated from `api-contract`.
+- **CI/CD:** Automated pipeline runs on push/PR to `main`: install, lint, build, type checking; PostgreSQL is provided via Docker for local development and production.
+- **Defaults:** The app runs with `pnpm install` and `pnpm start:dev` (or `npm start:dev` / `yarn start:dev`) with Docker PostgreSQL; env is optional for overrides.
+
+## Technical Decisions & Justifications
+
+Reasoning behind key choices:
+
+- **httpOnly cookies** — Access and refresh tokens live only in httpOnly cookies (never in `localStorage` or client JS). This mitigates XSS: injected script cannot read tokens. Combined with SameSite and CSRF protection, we get defense-in-depth. Rotating the refresh token on use limits the impact of token leakage.
+- **Refresh token path-restricted to `/api/auth/refresh`** — The refresh cookie is scoped with `Path=/api/auth/refresh`, so the browser sends it only to that endpoint. Attack surface is reduced: even if an attacker obtains a reflected XSS or similar, the cookie is not sent to arbitrary API routes—only to the dedicated refresh endpoint.
+- **openapi-fetch for type-safe API calls** — The web app uses `openapi-fetch` with types generated from the OpenAPI schema in `api-contract`. We get end-to-end type safety from schema to client (paths, request/response types) with no runtime overhead and no hand-maintained DTOs. Changes to the API surface show up as compile-time errors in the frontend.
+- **React Router for navigation** — Uses React Router v7 with route-based code splitting and protected routes. Auth checks run before component render to prevent FOUC (Flash of Unauthenticated Content).
+- **pnpm for dependency management** — pnpm gives fast, disk-efficient installs and strict dependency resolution (no phantom dependencies). The lock file is deterministic and CI/local installs stay consistent. It's the default choice here, though the repo works fine with npm, Yarn, or Bun.
+- **Django REST Framework** — Provides robust API building with built-in authentication, serialization, filtering, and pagination. DRF Spectacular generates OpenAPI schemas automatically from Django views.
+- **PostgreSQL** — Robust relational database with excellent Django support, ACID compliance, and advanced features like full-text search and JSON fields.
+
+## Scope
+
+### Authentication
+
+- `POST /api/auth/register` — User registration
+- `POST /api/auth/login` — User login (returns httpOnly cookies)
+- `POST /api/auth/refresh` — Refresh access token (path-restricted cookie)
+- `POST /api/auth/logout` — User logout (clears cookies)
+- `GET /api/auth/me` — Get current user (protected)
+
+Authentication is cookie-based with `httpOnly` cookies:
+
+- `access` cookie for authenticated API requests
+- `refresh` cookie for token rotation (`Path=/api/auth/refresh`)
+
+### Tasks
+
+- `GET /api/tasks` — List tasks (filtered by user, supports pagination, filtering by status/date range)
+- `POST /api/tasks` — Create a single task
+- `POST /api/tasks/bulk` — Bulk create tasks (JSON or CSV)
+- `GET /api/tasks/{id}` — Get a single task
+- `PATCH /api/tasks/{id}` — Update a task
+- `DELETE /api/tasks/{id}` — Delete a task
+- `GET /api/tasks/stats` — Get task statistics (counts by status)
+- `GET /api/tasks/export` — Export tasks to Excel (.xlsx)
+
+All task endpoints are protected and automatically filter by the authenticated user.
+
+## Requirements
+
+- **Node** ≥18
+- **pnpm**, **npm**, **Yarn**, or **Bun**
+- **Docker** (for PostgreSQL in dev and for the full prod stack)
+- **Python** ≥3.10 (for local API development, optional)
+
+## Package manager
+
+All root scripts use Turborepo and work with **pnpm**, **npm**, **Yarn**, or **Bun**. Use the same commands with your preferred manager (e.g. `pnpm start:dev`, `npm run start:dev`, `yarn start:dev`, or `bun run start:dev`).
+
+## Setup and run
+
+**Clone and install:**
 
 ```sh
-npx create-turbo@latest
+git clone <repo-url>
+cd <repo>
+pnpm install
+# or: npm install
+# or: yarn
+# or: bun install
 ```
 
-## What's inside?
+**Development:** Start PostgreSQL, then run API and web via Turbo.
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```sh
+pnpm db:up
+pnpm start:dev
+# or: npm run db:up && npm run start:dev
+# or: yarn db:up && yarn start:dev
+# or: bun run db:up && bun run start:dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+- **API:** http://localhost:8000
+- **Web:** http://localhost:5173 (proxies `/api` to the API)
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+**Production (all in Docker):**
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```sh
+pnpm start:prod
+# or: npm run start:prod
+# or: yarn start:prod
+# or: bun run start:prod
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+- App: http://localhost:8000 (override with `GATEWAY_PORT` in `.env` if needed)
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+**Optional env:** Copy `.env.example` to `.env` at the repo root. Main variables:
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+| Variable                | Description                                     |
+| ----------------------- | ----------------------------------------------- |
+| `GATEWAY_PORT`          | Host port for the prod gateway (default `8000`) |
+| `POSTGRES_DB`           | PostgreSQL database name (default `task_manager_db`) |
+| `POSTGRES_USER`         | PostgreSQL user (default `task_manager_user`)    |
+| `POSTGRES_PASSWORD`     | PostgreSQL password (default `task_manager_password`) |
+| `SECRET_KEY`            | Django secret key (change in production!)       |
+| `DEBUG`                 | Django debug mode (default `True` in dev)       |
+| `ALLOWED_HOSTS`         | Comma-separated list of allowed hosts          |
+| `ADMIN_SEED_PASSWORD`   | Password for default admin user (default `admin123!`) |
 
-### Remote Caching
+## Testing
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Use the same root scripts with pnpm, npm, Yarn, or Bun (e.g. `pnpm test`, `npm run test`, `yarn test`, `bun test`).
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- **API unit tests:** From `apps/api`: `uv run pytest` (requires PostgreSQL running or test database)
+- **Web unit tests:** From `apps/web`: `pnpm test` / `npm run test` / `yarn test` / `bun test`
+- **Type checking:** `pnpm check-types` (or `npm run check-types` / `yarn check-types` / `bun run check-types`)
+- **Linting:** `pnpm lint` (or `npm run lint` / `yarn lint` / `bun run lint`)
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-### Default admin (API)
+## Default admin (API)
 
 After migrating the API, run `python manage.py seed_admin` (or use the Docker image, which runs it on startup). Default admin: **admin@example.com** / **admin123!** (set `ADMIN_SEED_PASSWORD` in production).
 

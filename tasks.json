@@ -1,0 +1,193 @@
+[
+  {
+    "title": "Review code changes",
+    "description": "High priority task that needs immediate attention",
+    "status": "pending"
+  },
+  {
+    "title": "Update documentation",
+    "description": "Can be done later this week",
+    "status": "in_progress"
+  },
+  {
+    "title": "Fix bug in authentication",
+    "description": "Requires discussion with the team",
+    "status": "pending"
+  },
+  {
+    "title": "Implement new feature",
+    "description": "Blocked by other work items",
+    "status": "in_progress"
+  },
+  {
+    "title": "Write unit tests",
+    "description": "Ready to start immediately",
+    "status": "pending"
+  },
+  {
+    "title": "Refactor legacy code",
+    "description": "In progress, almost complete",
+    "status": "completed"
+  },
+  {
+    "title": "Deploy to staging",
+    "description": "Needs testing before deployment",
+    "status": "pending"
+  },
+  {
+    "title": "Review pull request",
+    "description": "Awaiting approval from stakeholders",
+    "status": "in_progress"
+  },
+  {
+    "title": "Update dependencies",
+    "description": "Critical for the next release",
+    "status": "pending"
+  },
+  {
+    "title": "Optimize database queries",
+    "description": "Nice to have feature",
+    "status": "completed"
+  },
+  {
+    "title": "Create API endpoint",
+    "description": "Low priority, can wait",
+    "status": "pending"
+  },
+  {
+    "title": "Design user interface",
+    "description": "Follow up required with client",
+    "status": "in_progress"
+  },
+  {
+    "title": "Write technical spec",
+    "description": "Needs more information before starting",
+    "status": "pending"
+  },
+  {
+    "title": "Conduct code review",
+    "description": "Dependent on external API",
+    "status": "completed"
+  },
+  {
+    "title": "Fix security vulnerability",
+    "description": "Requires database migration",
+    "status": "pending"
+  },
+  {
+    "title": "Update CI/CD pipeline",
+    "description": "Needs design mockups first",
+    "status": "in_progress"
+  },
+  {
+    "title": "Create migration script",
+    "description": "Waiting for third-party service",
+    "status": "pending"
+  },
+  {
+    "title": "Add error handling",
+    "description": "Requires security review",
+    "status": "completed"
+  },
+  {
+    "title": "Improve performance",
+    "description": "Needs performance testing",
+    "status": "pending"
+  },
+  {
+    "title": "Update user documentation",
+    "description": "Blocked by infrastructure changes",
+    "status": "in_progress"
+  },
+  {
+    "title": "Set up monitoring",
+    "status": "pending"
+  },
+  {
+    "title": "Configure logging",
+    "description": "High priority task",
+    "status": "in_progress"
+  },
+  {
+    "title": "Add analytics tracking",
+    "status": "pending"
+  },
+  {
+    "title": "Implement caching",
+    "description": "Can improve performance significantly",
+    "status": "completed"
+  },
+  {
+    "title": "Create backup strategy",
+    "description": "Critical for data safety",
+    "status": "pending"
+  },
+  {
+    "title": "Update user permissions",
+    "status": "in_progress"
+  },
+  {
+    "title": "Fix memory leak",
+    "description": "Causing performance issues",
+    "status": "pending"
+  },
+  {
+    "title": "Optimize image loading",
+    "status": "completed"
+  },
+  {
+    "title": "Add pagination",
+    "description": "Improve user experience",
+    "status": "pending"
+  },
+  {
+    "title": "Implement search functionality",
+    "description": "User requested feature",
+    "status": "in_progress"
+  },
+  {
+    "title": "Create admin dashboard",
+    "status": "pending"
+  },
+  {
+    "title": "Add email notifications",
+    "description": "Enhance user engagement",
+    "status": "completed"
+  },
+  {
+    "title": "Implement two-factor auth",
+    "description": "Security enhancement",
+    "status": "pending"
+  },
+  {
+    "title": "Create user onboarding flow",
+    "status": "in_progress"
+  },
+  {
+    "title": "Update error messages",
+    "description": "Make them more user-friendly",
+    "status": "pending"
+  },
+  {
+    "title": "Add dark mode support",
+    "status": "completed"
+  },
+  {
+    "title": "Optimize bundle size",
+    "description": "Reduce load times",
+    "status": "pending"
+  },
+  {
+    "title": "Add accessibility features",
+    "status": "in_progress"
+  },
+  {
+    "title": "Create mobile responsive design",
+    "status": "pending"
+  },
+  {
+    "title": "Implement real-time updates",
+    "description": "Using WebSockets",
+    "status": "completed"
+  }
+]

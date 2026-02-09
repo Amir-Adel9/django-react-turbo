@@ -77,6 +77,44 @@ async function fetchWithRefresh(input: Request): Promise<Response> {
   return fetch(input, { credentials: 'include' });
 }
 
+/**
+ * Fetch wrapper with automatic token refresh on 401.
+ * Can be used with Request objects or (url, options) like standard fetch.
+ * Exported for use in RTK Query endpoints and other direct fetch calls.
+ */
+export async function fetchWithAuth(
+  input: RequestInfo | URL,
+  init?: RequestInit,
+): Promise<Response> {
+  // Convert to Request if needed, ensuring credentials are included
+  const request =
+    input instanceof Request
+      ? input
+      : new Request(input, {
+          ...init,
+          credentials: 'include',
+        });
+
+  // Make initial request
+  const cloned = request.clone();
+  const response = await fetch(cloned, { credentials: 'include' });
+
+  // If not 401 or is an auth path, return response as-is
+  if (response.status !== 401 || isAuthPath(request.url)) {
+    return response;
+  }
+
+  // Attempt to refresh token
+  const refreshRes = await doRefresh();
+  if (!refreshRes.ok) {
+    clearAndRedirect();
+    return response;
+  }
+
+  // Retry original request after successful refresh
+  return fetch(request, { credentials: 'include' });
+}
+
 const client = createClient<paths>({
   baseUrl: API_BASE,
   credentials: 'include',

@@ -10,7 +10,7 @@ paths:
         Takes a set of user credentials and returns an access and refresh JSON web
         token pair to prove the authentication of those credentials.
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
@@ -30,17 +30,18 @@ paths:
     post:
       operationId: auth_logout_create
       tags:
-      - auth
+        - auth
       responses:
         '200':
           description: No response body
   /api/auth/me:
     get:
       operationId: auth_me_retrieve
-      description: 'Return current user from access_token cookie (same shape as Register:
+      description:
+        'Return current user from access_token cookie (same shape as Register:
         email, name).'
       tags:
-      - auth
+        - auth
       responses:
         '200':
           content:
@@ -52,9 +53,9 @@ paths:
     post:
       operationId: auth_refresh_create
       tags:
-      - auth
+        - auth
       security:
-      - {}
+        - {}
       responses:
         '200':
           description: No response body
@@ -62,7 +63,7 @@ paths:
     post:
       operationId: auth_register_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
@@ -76,7 +77,7 @@ paths:
               $ref: '#/components/schemas/RegisterRequest'
         required: true
       security:
-      - {}
+        - {}
       responses:
         '201':
           content:
@@ -93,121 +94,121 @@ paths:
         - YAML: application/vnd.oai.openapi
         - JSON: application/vnd.oai.openapi+json
       parameters:
-      - in: query
-        name: format
-        schema:
-          type: string
-          enum:
-          - json
-          - yaml
-      - in: query
-        name: lang
-        schema:
-          type: string
-          enum:
-          - af
-          - ar
-          - ar-dz
-          - ast
-          - az
-          - be
-          - bg
-          - bn
-          - br
-          - bs
-          - ca
-          - ckb
-          - cs
-          - cy
-          - da
-          - de
-          - dsb
-          - el
-          - en
-          - en-au
-          - en-gb
-          - eo
-          - es
-          - es-ar
-          - es-co
-          - es-mx
-          - es-ni
-          - es-ve
-          - et
-          - eu
-          - fa
-          - fi
-          - fr
-          - fy
-          - ga
-          - gd
-          - gl
-          - he
-          - hi
-          - hr
-          - hsb
-          - hu
-          - hy
-          - ia
-          - id
-          - ig
-          - io
-          - is
-          - it
-          - ja
-          - ka
-          - kab
-          - kk
-          - km
-          - kn
-          - ko
-          - ky
-          - lb
-          - lt
-          - lv
-          - mk
-          - ml
-          - mn
-          - mr
-          - ms
-          - my
-          - nb
-          - ne
-          - nl
-          - nn
-          - os
-          - pa
-          - pl
-          - pt
-          - pt-br
-          - ro
-          - ru
-          - sk
-          - sl
-          - sq
-          - sr
-          - sr-latn
-          - sv
-          - sw
-          - ta
-          - te
-          - tg
-          - th
-          - tk
-          - tr
-          - tt
-          - udm
-          - ug
-          - uk
-          - ur
-          - uz
-          - vi
-          - zh-hans
-          - zh-hant
+        - in: query
+          name: format
+          schema:
+            type: string
+            enum:
+              - json
+              - yaml
+        - in: query
+          name: lang
+          schema:
+            type: string
+            enum:
+              - af
+              - ar
+              - ar-dz
+              - ast
+              - az
+              - be
+              - bg
+              - bn
+              - br
+              - bs
+              - ca
+              - ckb
+              - cs
+              - cy
+              - da
+              - de
+              - dsb
+              - el
+              - en
+              - en-au
+              - en-gb
+              - eo
+              - es
+              - es-ar
+              - es-co
+              - es-mx
+              - es-ni
+              - es-ve
+              - et
+              - eu
+              - fa
+              - fi
+              - fr
+              - fy
+              - ga
+              - gd
+              - gl
+              - he
+              - hi
+              - hr
+              - hsb
+              - hu
+              - hy
+              - ia
+              - id
+              - ig
+              - io
+              - is
+              - it
+              - ja
+              - ka
+              - kab
+              - kk
+              - km
+              - kn
+              - ko
+              - ky
+              - lb
+              - lt
+              - lv
+              - mk
+              - ml
+              - mn
+              - mr
+              - ms
+              - my
+              - nb
+              - ne
+              - nl
+              - nn
+              - os
+              - pa
+              - pl
+              - pt
+              - pt-br
+              - ro
+              - ru
+              - sk
+              - sl
+              - sq
+              - sr
+              - sr-latn
+              - sv
+              - sw
+              - ta
+              - te
+              - tg
+              - th
+              - tk
+              - tr
+              - tt
+              - udm
+              - ug
+              - uk
+              - ur
+              - uz
+              - vi
+              - zh-hans
+              - zh-hant
       tags:
-      - schema
+        - schema
       security:
-      - {}
+        - {}
       responses:
         '200':
           content:
@@ -235,20 +236,20 @@ paths:
         ViewSet for task CRUD, filtered by the current user.
         Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
       parameters:
-      - name: limit
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
+        - name: limit
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
       tags:
-      - tasks
+        - tasks
       responses:
         '200':
           content:
@@ -262,7 +263,7 @@ paths:
         ViewSet for task CRUD, filtered by the current user.
         Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
       tags:
-      - tasks
+        - tasks
       requestBody:
         content:
           application/json:
@@ -289,13 +290,13 @@ paths:
         ViewSet for task CRUD, filtered by the current user.
         Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
       tags:
-      - tasks
+        - tasks
       responses:
         '200':
           content:
@@ -309,13 +310,13 @@ paths:
         ViewSet for task CRUD, filtered by the current user.
         Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
       tags:
-      - tasks
+        - tasks
       requestBody:
         content:
           application/json:
@@ -340,26 +341,27 @@ paths:
         ViewSet for task CRUD, filtered by the current user.
         Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
       tags:
-      - tasks
+        - tasks
       responses:
         '204':
           description: No response body
   /api/tasks/bulk:
     post:
       operationId: tasks_bulk_create
-      description: 'Create multiple tasks. Send a JSON array of task objects, or CSV
+      description:
+        'Create multiple tasks. Send a JSON array of task objects, or CSV
         via multipart file (key "file" or "csv") or raw body with Content-Type: text/csv.
-        Maximum 500 items per request. At least one task required. Requires authentication
+        Maximum 2000 items per request. At least one task required. Requires authentication
         (cookie).'
       parameters: []
       tags:
-      - tasks
+        - tasks
       requestBody:
         content:
           application/json:
@@ -370,11 +372,11 @@ paths:
             examples:
               BulkTasks(JSONArray):
                 value:
-                - title: First task
-                  status: pending
-                - title: Second task
-                  description: Optional description
-                  status: in_progress
+                  - title: First task
+                    status: pending
+                  - title: Second task
+                    description: Optional description
+                    status: in_progress
                 summary: Bulk tasks (JSON array)
         required: true
       responses:
@@ -389,40 +391,43 @@ paths:
   /api/tasks/export:
     get:
       operationId: tasks_export_retrieve
-      description: 'Export tasks as Excel (.xlsx). Optional query params: from, to
+      description:
+        'Export tasks as Excel (.xlsx). Optional query params: from, to
         (ISO 8601 dates, interpreted in server timezone if naive), status. Returns
         file with headers only when no tasks match. Maximum 10000 rows; request fails
         with 400 if exceeded.'
       parameters:
-      - in: query
-        name: from
-        schema:
-          type: string
-        description: Filter tasks created on or after this date (ISO 8601, e.g. 2025-01-01
-          or 2025-01-01T00:00:00Z).
-      - in: query
-        name: status
-        schema:
-          type: string
-          enum:
-          - completed
-          - in_progress
-          - pending
-        description: 'Filter by status: pending, in_progress, completed.'
-      - in: query
-        name: to
-        schema:
-          type: string
-        description: Filter tasks created on or before this date (ISO 8601).
+        - in: query
+          name: from
+          schema:
+            type: string
+          description:
+            Filter tasks created on or after this date (ISO 8601, e.g. 2025-01-01
+            or 2025-01-01T00:00:00Z).
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - completed
+              - in_progress
+              - pending
+          description: 'Filter by status: pending, in_progress, completed.'
+        - in: query
+          name: to
+          schema:
+            type: string
+          description: Filter tasks created on or before this date (ISO 8601).
       tags:
-      - tasks
+        - tasks
       responses:
         '200':
           content:
             application/json:
               schema:
                 content:
-                  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet: {}
+                  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+                    {}
           description: ''
         '400':
           content:
@@ -433,10 +438,11 @@ paths:
   /api/tasks/stats:
     get:
       operationId: tasks_stats_retrieve
-      description: Task counts for the current user (total, completed, in_progress,
+      description:
+        Task counts for the current user (total, completed, in_progress,
         pending).
       tags:
-      - tasks
+        - tasks
       responses:
         '200':
           content:
@@ -458,11 +464,12 @@ components:
           writeOnly: true
           minLength: 1
       required:
-      - email
-      - password
+        - email
+        - password
     Me:
       type: object
-      description: Read-only serializer for GET /api/auth/me (same shape as Register
+      description:
+        Read-only serializer for GET /api/auth/me (same shape as Register
         for API contract).
       properties:
         email:
@@ -474,13 +481,13 @@ components:
           type: string
           readOnly: true
       required:
-      - email
-      - name
+        - email
+        - name
     PaginatedTaskList:
       type: object
       required:
-      - count
-      - results
+        - count
+        - results
       properties:
         count:
           type: integer
@@ -522,8 +529,8 @@ components:
           type: string
           maxLength: 255
       required:
-      - email
-      - name
+        - email
+        - name
     RegisterRequest:
       type: object
       properties:
@@ -546,15 +553,15 @@ components:
           writeOnly: true
           minLength: 1
       required:
-      - email
-      - name
-      - password
-      - password_confirm
+        - email
+        - name
+        - password
+        - password_confirm
     StatusEnum:
       enum:
-      - pending
-      - in_progress
-      - completed
+        - pending
+        - in_progress
+        - completed
       type: string
       description: |-
         * `pending` - Pending
@@ -578,9 +585,9 @@ components:
           format: date-time
           readOnly: true
       required:
-      - created_at
-      - id
-      - title
+        - created_at
+        - id
+        - title
     TaskBulkItemRequest:
       type: object
       properties:
@@ -594,10 +601,10 @@ components:
           maxLength: 10000
         status:
           allOf:
-          - $ref: '#/components/schemas/StatusEnum'
+            - $ref: '#/components/schemas/StatusEnum'
           default: pending
       required:
-      - title
+        - title
     TaskCreate:
       type: object
       properties:
@@ -609,7 +616,7 @@ components:
         status:
           $ref: '#/components/schemas/StatusEnum'
       required:
-      - title
+        - title
     TaskCreateRequest:
       type: object
       properties:
@@ -622,7 +629,7 @@ components:
         status:
           $ref: '#/components/schemas/StatusEnum'
       required:
-      - title
+        - title
     TaskStats:
       type: object
       properties:
@@ -639,7 +646,7 @@ components:
           type: integer
           readOnly: true
       required:
-      - completed
-      - in_progress
-      - pending
-      - total
+        - completed
+        - in_progress
+        - pending
+        - total

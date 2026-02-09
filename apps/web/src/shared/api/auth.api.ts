@@ -5,37 +5,34 @@ import type {
   RegisterResponse,
   User,
 } from '@/shared/api/api.types';
-import { apiClient } from '@/shared/api/http-client';
+import { getApiBaseUrl, fetchWithAuth } from '@/shared/api/http-client';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
+function authUrl(path: string): string {
+  const base = getApiBaseUrl();
+  return `${base ? base.replace(/\/$/, '') : ''}${path}`;
+}
+
 /**
- * Type-safe auth API: all calls go through openapi-fetch client so path and
- * body types are enforced by the schema. RTK Query provides hooks and cache.
+ * Auth API via fetch (credentials: include) so path types are not tied to
+ * openapi-fetch. RTK Query provides hooks and cache.
  */
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: () => ({ data: undefined }), // unused; we use queryFn for every endpoint
+  baseQuery: () => ({ data: undefined }),
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginBody>({
       queryFn: async (body) => {
         try {
-          const result = await apiClient.POST('/api/auth/login', { body });
-          const { response } = result;
-          if (!response.ok) {
-            const data = 'error' in result ? result.error : undefined;
-            return {
-              error: {
-                status: response.status,
-                data: data ?? (await response.clone().json().catch(() => ({}))),
-              },
-            };
-          }
-          // Schema marks 200 as no content; backend actually returns { user }
-          const out =
-            'data' in result && result.data !== undefined
-              ? result.data
-              : (await response.json().catch(() => ({}))) as LoginResponse;
-          return { data: out as LoginResponse };
+          const res = await fetchWithAuth(authUrl('/api/auth/login'), {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) return { error: { status: res.status, data } };
+          return { data: data as LoginResponse };
         } catch (err) {
           return {
             error: {
@@ -50,23 +47,15 @@ export const authApi = createApi({
     register: builder.mutation<RegisterResponse, RegisterBody>({
       queryFn: async (body) => {
         try {
-          const result = await apiClient.POST('/api/auth/register', { body });
-          const { response } = result;
-          if (!response.ok) {
-            const data = 'error' in result ? result.error : undefined;
-            return {
-              error: {
-                status: response.status,
-                data: data ?? (await response.clone().json().catch(() => ({}))),
-              },
-            };
-          }
-          // 201: schema has Register; backend returns { message }
-          const raw =
-            'data' in result && result.data !== undefined
-              ? result.data
-              : await response.json().catch(() => ({}));
-          return { data: raw as RegisterResponse };
+          const res = await fetchWithAuth(authUrl('/api/auth/register'), {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) return { error: { status: res.status, data } };
+          return { data: data as RegisterResponse };
         } catch (err) {
           return {
             error: {
@@ -81,22 +70,13 @@ export const authApi = createApi({
     refresh: builder.query<{ ok?: boolean }, void>({
       queryFn: async () => {
         try {
-          const result = await apiClient.POST('/api/auth/refresh');
-          const { response } = result;
-          if (!response.ok) {
-            const data = 'error' in result ? result.error : undefined;
-            return {
-              error: {
-                status: response.status,
-                data: data ?? (await response.clone().json().catch(() => ({}))),
-              },
-            };
-          }
-          const out =
-            'data' in result && result.data !== undefined
-              ? result.data
-              : (await response.json().catch(() => ({}))) as { ok?: boolean };
-          return { data: out };
+          const res = await fetchWithAuth(authUrl('/api/auth/refresh'), {
+            method: 'POST',
+            credentials: 'include',
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) return { error: { status: res.status, data } };
+          return { data: data as { ok?: boolean } };
         } catch (err) {
           return {
             error: {
@@ -111,16 +91,13 @@ export const authApi = createApi({
     logout: builder.mutation<void, void>({
       queryFn: async () => {
         try {
-          const result = await apiClient.POST('/api/auth/logout');
-          const { response } = result;
-          if (!response.ok) {
-            const data = 'error' in result ? result.error : undefined;
-            return {
-              error: {
-                status: response.status,
-                data: data ?? (await response.clone().json().catch(() => ({}))),
-              },
-            };
+          const res = await fetchWithAuth(authUrl('/api/auth/logout'), {
+            method: 'POST',
+            credentials: 'include',
+          });
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            return { error: { status: res.status, data } };
           }
           return { data: undefined };
         } catch (err) {

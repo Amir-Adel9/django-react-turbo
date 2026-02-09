@@ -4,647 +4,746 @@
  */
 
 export interface paths {
-    "/api/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * @description Takes a set of user credentials and returns an access and refresh JSON web
-         *     token pair to prove the authentication of those credentials.
-         */
-        post: operations["auth_login_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  '/api/auth/login': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/auth/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["auth_logout_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * @description Takes a set of user credentials and returns an access and refresh JSON web
+     *     token pair to prove the authentication of those credentials.
+     */
+    post: operations['auth_login_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/auth/logout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/auth/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Return current user from access_token cookie (same shape as Register: email, name). */
-        get: operations["auth_me_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations['auth_logout_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/auth/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/auth/refresh": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["auth_refresh_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** @description Return current user from access_token cookie (same shape as Register: email, name). */
+    get: operations['auth_me_retrieve'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/auth/refresh': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/auth/register": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["auth_register_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations['auth_refresh_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/auth/register': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/schema": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * @description OpenApi3 schema for this API. Format can be selected via content negotiation.
-         *
-         *     - YAML: application/vnd.oai.openapi
-         *     - JSON: application/vnd.oai.openapi+json
-         */
-        get: operations["schema_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations['auth_register_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/schema': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/tasks": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * @description ViewSet for task CRUD, filtered by the current user.
-         *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
-         */
-        get: operations["tasks_list"];
-        put?: never;
-        /**
-         * @description ViewSet for task CRUD, filtered by the current user.
-         *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
-         */
-        post: operations["tasks_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * @description OpenApi3 schema for this API. Format can be selected via content negotiation.
+     *
+     *     - YAML: application/vnd.oai.openapi
+     *     - JSON: application/vnd.oai.openapi+json
+     */
+    get: operations['schema_retrieve'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/tasks': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/tasks/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * @description ViewSet for task CRUD, filtered by the current user.
-         *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
-         */
-        get: operations["tasks_retrieve"];
-        put?: never;
-        post?: never;
-        /**
-         * @description ViewSet for task CRUD, filtered by the current user.
-         *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
-         */
-        delete: operations["tasks_destroy"];
-        options?: never;
-        head?: never;
-        /**
-         * @description ViewSet for task CRUD, filtered by the current user.
-         *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
-         */
-        patch: operations["tasks_partial_update"];
-        trace?: never;
+    /**
+     * @description ViewSet for task CRUD, filtered by the current user.
+     *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
+     */
+    get: operations['tasks_list'];
+    put?: never;
+    /**
+     * @description ViewSet for task CRUD, filtered by the current user.
+     *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
+     */
+    post: operations['tasks_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/tasks/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/tasks/bulk": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Create multiple tasks. Send a JSON array of task objects, or CSV via multipart file (key "file" or "csv") or raw body with Content-Type: text/csv. Maximum 500 items per request. At least one task required. Requires authentication (cookie). */
-        post: operations["tasks_bulk_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * @description ViewSet for task CRUD, filtered by the current user.
+     *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
+     */
+    get: operations['tasks_retrieve'];
+    put?: never;
+    post?: never;
+    /**
+     * @description ViewSet for task CRUD, filtered by the current user.
+     *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
+     */
+    delete: operations['tasks_destroy'];
+    options?: never;
+    head?: never;
+    /**
+     * @description ViewSet for task CRUD, filtered by the current user.
+     *     Supports list/create/retrieve/update/destroy, stats, bulk create (JSON or CSV), and Excel export.
+     */
+    patch: operations['tasks_partial_update'];
+    trace?: never;
+  };
+  '/api/tasks/bulk': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/tasks/export": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Export tasks as Excel (.xlsx). Optional query params: from, to (ISO 8601 dates, interpreted in server timezone if naive), status. Returns file with headers only when no tasks match. Maximum 10000 rows; request fails with 400 if exceeded. */
-        get: operations["tasks_export_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** @description Create multiple tasks. Send a JSON array of task objects, or CSV via multipart file (key "file" or "csv") or raw body with Content-Type: text/csv. Maximum 2000 items per request. At least one task required. Requires authentication (cookie). */
+    post: operations['tasks_bulk_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/tasks/export': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/tasks/stats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Task counts for the current user (total, completed, in_progress, pending). */
-        get: operations["tasks_stats_retrieve"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** @description Export tasks as Excel (.xlsx). Optional query params: from, to (ISO 8601 dates, interpreted in server timezone if naive), status. Returns file with headers only when no tasks match. Maximum 10000 rows; request fails with 400 if exceeded. */
+    get: operations['tasks_export_retrieve'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/tasks/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    /** @description Task counts for the current user (total, completed, in_progress, pending). */
+    get: operations['tasks_stats_retrieve'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        CustomTokenObtainPairRequest: {
-            email: string;
-            password: string;
-        };
-        /** @description Read-only serializer for GET /api/auth/me/ (same shape as Register for API contract). */
-        Me: {
-            /**
-             * Email address
-             * Format: email
-             */
-            readonly email: string;
-            readonly name: string;
-        };
-        PaginatedTaskList: {
-            /** @example 123 */
-            count: number;
-            /**
-             * Format: uri
-             * @example http://api.example.org/accounts/?page=4
-             */
-            next?: string | null;
-            /**
-             * Format: uri
-             * @example http://api.example.org/accounts/?page=2
-             */
-            previous?: string | null;
-            results: components["schemas"]["Task"][];
-        };
-        PatchedTaskRequest: {
-            title?: string;
-            description?: string;
-            status?: components["schemas"]["StatusEnum"];
-        };
-        Register: {
-            /**
-             * Email address
-             * Format: email
-             */
-            email: string;
-            name: string;
-        };
-        RegisterRequest: {
-            /**
-             * Email address
-             * Format: email
-             */
-            email: string;
-            name: string;
-            password: string;
-            password_confirm: string;
-        };
-        /**
-         * @description * `pending` - Pending
-         *     * `in_progress` - In Progress
-         *     * `completed` - Completed
-         * @enum {string}
-         */
-        StatusEnum: "pending" | "in_progress" | "completed";
-        Task: {
-            readonly id: number;
-            title: string;
-            description?: string;
-            status?: components["schemas"]["StatusEnum"];
-            /** Format: date-time */
-            readonly created_at: string;
-        };
-        TaskBulkItemRequest: {
-            title: string;
-            /** @default  */
-            description: string;
-            /** @default pending */
-            status: components["schemas"]["StatusEnum"];
-        };
-        TaskCreate: {
-            title: string;
-            description?: string;
-            status?: components["schemas"]["StatusEnum"];
-        };
-        TaskCreateRequest: {
-            title: string;
-            description?: string;
-            status?: components["schemas"]["StatusEnum"];
-        };
-        TaskStats: {
-            readonly total: number;
-            readonly completed: number;
-            readonly in_progress: number;
-            readonly pending: number;
-        };
+  schemas: {
+    CustomTokenObtainPairRequest: {
+      email: string;
+      password: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    /** @description Read-only serializer for GET /api/auth/me/ (same shape as Register for API contract). */
+    Me: {
+      /**
+       * Email address
+       * Format: email
+       */
+      readonly email: string;
+      readonly name: string;
+    };
+    PaginatedTaskList: {
+      /** @example 123 */
+      count: number;
+      /**
+       * Format: uri
+       * @example http://api.example.org/accounts/?page=4
+       */
+      next?: string | null;
+      /**
+       * Format: uri
+       * @example http://api.example.org/accounts/?page=2
+       */
+      previous?: string | null;
+      results: components['schemas']['Task'][];
+    };
+    PatchedTaskRequest: {
+      title?: string;
+      description?: string;
+      status?: components['schemas']['StatusEnum'];
+    };
+    Register: {
+      /**
+       * Email address
+       * Format: email
+       */
+      email: string;
+      name: string;
+    };
+    RegisterRequest: {
+      /**
+       * Email address
+       * Format: email
+       */
+      email: string;
+      name: string;
+      password: string;
+      password_confirm: string;
+    };
+    /**
+     * @description * `pending` - Pending
+     *     * `in_progress` - In Progress
+     *     * `completed` - Completed
+     * @enum {string}
+     */
+    StatusEnum: 'pending' | 'in_progress' | 'completed';
+    Task: {
+      readonly id: number;
+      title: string;
+      description?: string;
+      status?: components['schemas']['StatusEnum'];
+      /** Format: date-time */
+      readonly created_at: string;
+    };
+    TaskBulkItemRequest: {
+      title: string;
+      /** @default  */
+      description: string;
+      /** @default pending */
+      status: components['schemas']['StatusEnum'];
+    };
+    TaskCreate: {
+      title: string;
+      description?: string;
+      status?: components['schemas']['StatusEnum'];
+    };
+    TaskCreateRequest: {
+      title: string;
+      description?: string;
+      status?: components['schemas']['StatusEnum'];
+    };
+    TaskStats: {
+      readonly total: number;
+      readonly completed: number;
+      readonly in_progress: number;
+      readonly pending: number;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    auth_login_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CustomTokenObtainPairRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["CustomTokenObtainPairRequest"];
-                "multipart/form-data": components["schemas"]["CustomTokenObtainPairRequest"];
-            };
-        };
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  auth_login_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    auth_logout_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CustomTokenObtainPairRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['CustomTokenObtainPairRequest'];
+        'multipart/form-data': components['schemas']['CustomTokenObtainPairRequest'];
+      };
     };
-    auth_me_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description No response body */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Me"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    auth_refresh_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  auth_logout_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    auth_register_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description No response body */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RegisterRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["RegisterRequest"];
-                "multipart/form-data": components["schemas"]["RegisterRequest"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Register"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    schema_retrieve: {
-        parameters: {
-            query?: {
-                format?: "json" | "yaml";
-                lang?: "af" | "ar" | "ar-dz" | "ast" | "az" | "be" | "bg" | "bn" | "br" | "bs" | "ca" | "ckb" | "cs" | "cy" | "da" | "de" | "dsb" | "el" | "en" | "en-au" | "en-gb" | "eo" | "es" | "es-ar" | "es-co" | "es-mx" | "es-ni" | "es-ve" | "et" | "eu" | "fa" | "fi" | "fr" | "fy" | "ga" | "gd" | "gl" | "he" | "hi" | "hr" | "hsb" | "hu" | "hy" | "ia" | "id" | "ig" | "io" | "is" | "it" | "ja" | "ka" | "kab" | "kk" | "km" | "kn" | "ko" | "ky" | "lb" | "lt" | "lv" | "mk" | "ml" | "mn" | "mr" | "ms" | "my" | "nb" | "ne" | "nl" | "nn" | "os" | "pa" | "pl" | "pt" | "pt-br" | "ro" | "ru" | "sk" | "sl" | "sq" | "sr" | "sr-latn" | "sv" | "sw" | "ta" | "te" | "tg" | "th" | "tk" | "tr" | "tt" | "udm" | "ug" | "uk" | "ur" | "uz" | "vi" | "zh-hans" | "zh-hant";
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/vnd.oai.openapi": {
-                        [key: string]: unknown;
-                    };
-                    "application/yaml": {
-                        [key: string]: unknown;
-                    };
-                    "application/vnd.oai.openapi+json": {
-                        [key: string]: unknown;
-                    };
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
-                };
-            };
-        };
+  };
+  auth_me_retrieve: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    tasks_list: {
-        parameters: {
-            query?: {
-                /** @description Number of results to return per page. */
-                limit?: number;
-                /** @description A page number within the paginated result set. */
-                page?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PaginatedTaskList"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['Me'];
         };
+      };
     };
-    tasks_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TaskCreateRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["TaskCreateRequest"];
-                "multipart/form-data": components["schemas"]["TaskCreateRequest"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TaskCreate"];
-                };
-            };
-        };
+  };
+  auth_refresh_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    tasks_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description No response body */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Task"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    tasks_destroy: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No response body */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  auth_register_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    tasks_partial_update: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["PatchedTaskRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["PatchedTaskRequest"];
-                "multipart/form-data": components["schemas"]["PatchedTaskRequest"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Task"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RegisterRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['RegisterRequest'];
+        'multipart/form-data': components['schemas']['RegisterRequest'];
+      };
     };
-    tasks_bulk_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TaskBulkItemRequest"][];
-            };
+        content: {
+          'application/json': components['schemas']['Register'];
         };
-        responses: {
-            /** @description Created tasks (array of task objects). */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Task"][];
-                };
-            };
-        };
+      };
     };
-    tasks_export_retrieve: {
-        parameters: {
-            query?: {
-                /** @description Filter tasks created on or after this date (ISO 8601, e.g. 2025-01-01 or 2025-01-01T00:00:00Z). */
-                from?: string;
-                /** @description Filter by status: pending, in_progress, completed. */
-                status?: "completed" | "in_progress" | "pending";
-                /** @description Filter tasks created on or before this date (ISO 8601). */
-                to?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-        };
+  };
+  schema_retrieve: {
+    parameters: {
+      query?: {
+        format?: 'json' | 'yaml';
+        lang?:
+          | 'af'
+          | 'ar'
+          | 'ar-dz'
+          | 'ast'
+          | 'az'
+          | 'be'
+          | 'bg'
+          | 'bn'
+          | 'br'
+          | 'bs'
+          | 'ca'
+          | 'ckb'
+          | 'cs'
+          | 'cy'
+          | 'da'
+          | 'de'
+          | 'dsb'
+          | 'el'
+          | 'en'
+          | 'en-au'
+          | 'en-gb'
+          | 'eo'
+          | 'es'
+          | 'es-ar'
+          | 'es-co'
+          | 'es-mx'
+          | 'es-ni'
+          | 'es-ve'
+          | 'et'
+          | 'eu'
+          | 'fa'
+          | 'fi'
+          | 'fr'
+          | 'fy'
+          | 'ga'
+          | 'gd'
+          | 'gl'
+          | 'he'
+          | 'hi'
+          | 'hr'
+          | 'hsb'
+          | 'hu'
+          | 'hy'
+          | 'ia'
+          | 'id'
+          | 'ig'
+          | 'io'
+          | 'is'
+          | 'it'
+          | 'ja'
+          | 'ka'
+          | 'kab'
+          | 'kk'
+          | 'km'
+          | 'kn'
+          | 'ko'
+          | 'ky'
+          | 'lb'
+          | 'lt'
+          | 'lv'
+          | 'mk'
+          | 'ml'
+          | 'mn'
+          | 'mr'
+          | 'ms'
+          | 'my'
+          | 'nb'
+          | 'ne'
+          | 'nl'
+          | 'nn'
+          | 'os'
+          | 'pa'
+          | 'pl'
+          | 'pt'
+          | 'pt-br'
+          | 'ro'
+          | 'ru'
+          | 'sk'
+          | 'sl'
+          | 'sq'
+          | 'sr'
+          | 'sr-latn'
+          | 'sv'
+          | 'sw'
+          | 'ta'
+          | 'te'
+          | 'tg'
+          | 'th'
+          | 'tk'
+          | 'tr'
+          | 'tt'
+          | 'udm'
+          | 'ug'
+          | 'uk'
+          | 'ur'
+          | 'uz'
+          | 'vi'
+          | 'zh-hans'
+          | 'zh-hant';
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    tasks_stats_retrieve: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TaskStats"];
-                };
-            };
+        content: {
+          'application/vnd.oai.openapi': {
+            [key: string]: unknown;
+          };
+          'application/yaml': {
+            [key: string]: unknown;
+          };
+          'application/vnd.oai.openapi+json': {
+            [key: string]: unknown;
+          };
+          'application/json': {
+            [key: string]: unknown;
+          };
         };
+      };
     };
+  };
+  tasks_list: {
+    parameters: {
+      query?: {
+        /** @description Number of results to return per page. */
+        limit?: number;
+        /** @description A page number within the paginated result set. */
+        page?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PaginatedTaskList'];
+        };
+      };
+    };
+  };
+  tasks_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TaskCreateRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['TaskCreateRequest'];
+        'multipart/form-data': components['schemas']['TaskCreateRequest'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TaskCreate'];
+        };
+      };
+    };
+  };
+  tasks_retrieve: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Task'];
+        };
+      };
+    };
+  };
+  tasks_destroy: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description No response body */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  tasks_partial_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['PatchedTaskRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['PatchedTaskRequest'];
+        'multipart/form-data': components['schemas']['PatchedTaskRequest'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Task'];
+        };
+      };
+    };
+  };
+  tasks_bulk_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TaskBulkItemRequest'][];
+      };
+    };
+    responses: {
+      /** @description Created tasks (array of task objects). */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Task'][];
+        };
+      };
+    };
+  };
+  tasks_export_retrieve: {
+    parameters: {
+      query?: {
+        /** @description Filter tasks created on or after this date (ISO 8601, e.g. 2025-01-01 or 2025-01-01T00:00:00Z). */
+        from?: string;
+        /** @description Filter by status: pending, in_progress, completed. */
+        status?: 'completed' | 'in_progress' | 'pending';
+        /** @description Filter tasks created on or before this date (ISO 8601). */
+        to?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
+        };
+      };
+    };
+  };
+  tasks_stats_retrieve: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TaskStats'];
+        };
+      };
+    };
+  };
 }

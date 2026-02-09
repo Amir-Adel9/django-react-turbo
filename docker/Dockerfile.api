@@ -10,11 +10,11 @@ WORKDIR /app
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 # Install dependencies (no dev group)
-COPY pyproject.toml uv.lock ./
+COPY apps/api/pyproject.toml apps/api/uv.lock ./
 RUN uv sync --no-dev --no-install-project
 
-# Copy application
-COPY . .
+# Copy application (preserve pyproject.toml and uv.lock)
+COPY apps/api/ .
 
 # Run migrations and start gunicorn
 RUN uv run python manage.py collectstatic --noinput || true

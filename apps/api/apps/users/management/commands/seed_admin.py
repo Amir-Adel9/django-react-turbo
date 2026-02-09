@@ -22,7 +22,8 @@ def run_seed_admin():
         if User.objects.filter(email=DEFAULT_ADMIN_EMAIL).exists():
             logger.info("Admin user already exists, skipping seed.")
             return "exists"
-    except OperationalError as e:
+    except (OperationalError, Exception) as e:
+        # Catch OperationalError (connection issues) and ProgrammingError (tables don't exist)
         logger.info("Database not ready for admin seed, skipping: %s", e)
         return "skipped"
 

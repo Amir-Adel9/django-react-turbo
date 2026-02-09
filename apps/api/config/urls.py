@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/auth/me', MeView.as_view(), name='auth_me'),
     path('api/auth/logout', LogoutView.as_view(), name='logout'),
 
-    path('api/tasks', include('tasks.urls')),
+    path('api/', include('tasks.urls')),
 ]
 
 if settings.DEBUG:
