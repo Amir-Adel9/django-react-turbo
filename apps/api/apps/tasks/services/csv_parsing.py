@@ -23,7 +23,12 @@ def parse_csv_to_task_rows(csv_file: BinaryIO) -> list[dict[str, Any]]:
         title = str(row.get('title', '')).strip()
         if not title:
             continue
-        desc = str(row.get('description', '')).strip()[:BULK_DESCRIPTION_MAX_LENGTH]
+        desc_raw = str(row.get('description', '')).strip()
+        # Handle pandas 'nan' string representation
+        if desc_raw.lower() == 'nan' or desc_raw == '':
+            desc = ''
+        else:
+            desc = desc_raw[:BULK_DESCRIPTION_MAX_LENGTH]
         raw_status = str(row.get('status', '')).strip().lower()
         status_val = raw_status if raw_status in valid_statuses else Task.Status.PENDING
         rows.append({

@@ -27,7 +27,7 @@ Monorepo: **API** (Django + PostgreSQL) and **Web** (React + Vite). No env files
 - **Auth:** Cookie-based sessions only: httpOnly `access_token` and `refresh_token`; refresh path-restricted; no auth state in `localStorage`.
 - **Security:** The project uses a **Dual-Token Rotation** strategy with **httpOnly** cookies: access and refresh tokens are stored only in httpOnly cookies, the refresh token is path-scoped to `/api/auth/refresh` and rotated on refresh; no tokens in `localStorage` or client-side JS.
 - **Contract:** API surface is described by OpenAPI; the web app uses `openapi-fetch` and types generated from `api-contract`.
-- **CI/CD:** Automated pipeline runs on push/PR to `main`: install, lint, build, type checking; PostgreSQL is provided via Docker for local development and production.
+- **CI/CD:** Automated pipeline runs on push/PR to `main`: install, lint, build, type checking, unit tests, and E2E tests; PostgreSQL is provided via Docker for local development, production, and CI.
 - **Defaults:** The app runs with `pnpm install` and `pnpm start:dev` (or `npm start:dev` / `yarn start:dev`) with Docker PostgreSQL; env is optional for overrides.
 
 ## Technical Decisions & Justifications
@@ -135,10 +135,61 @@ pnpm start:prod
 
 Use the same root scripts with pnpm, npm, Yarn, or Bun (e.g. `pnpm test`, `npm run test`, `yarn test`, `bun test`).
 
-- **API unit tests:** From `apps/api`: `uv run pytest` (requires PostgreSQL running or test database)
-- **Web unit tests:** From `apps/web`: `pnpm test` / `npm run test` / `yarn test` / `bun test`
-- **Type checking:** `pnpm check-types` (or `npm run check-types` / `yarn check-types` / `bun run check-types`)
-- **Linting:** `pnpm lint` (or `npm run lint` / `yarn lint` / `bun run lint`)
+### Test Structure
+
+- **Backend unit tests:** `apps/api/apps/*/tests/test_*.py` - Test models, serializers, views, services, filters
+- **Backend E2E tests:** `apps/api/tests/e2e/test_*.py` - Test complete API flows
+- **Frontend unit tests:** `apps/web/src/**/*.test.tsx` - Test components, hooks, utilities
+
+### Running Tests
+
+**All tests:**
+```sh
+pnpm test:all
+# or: npm run test:all
+# or: yarn test:all
+# or: bun run test:all
+```
+
+**API unit tests:**
+```sh
+pnpm test:api
+# or from apps/api: uv run pytest apps/ -v
+```
+
+**Web unit tests:**
+```sh
+pnpm test:web
+# or from apps/web: pnpm test
+```
+
+**API E2E tests:**
+```sh
+pnpm test:e2e:api
+# Requires PostgreSQL running (use pnpm db:up)
+```
+
+**Test coverage:**
+```sh
+pnpm test:coverage
+# or: npm run test:coverage
+# or: yarn test:coverage
+```
+
+### Test Commands Reference
+
+| Command | Description |
+|---------|-------------|
+| `pnpm test` | Run all unit tests (API + Web) |
+| `pnpm test:api` | Run API unit tests only |
+| `pnpm test:web` | Run web unit tests only |
+| `pnpm test:e2e:api` | Run API E2E tests |
+| `pnpm test:all` | Run all unit tests + API E2E tests |
+| `pnpm test:coverage` | Run tests with coverage reports |
+
+**Type checking:** `pnpm check-types` (or `npm run check-types` / `yarn check-types` / `bun run check-types`)
+
+**Linting:** `pnpm lint` (or `npm run lint` / `yarn lint` / `bun run lint`)
 
 ## Default admin (API)
 

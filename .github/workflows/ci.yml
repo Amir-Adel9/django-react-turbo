@@ -1,0 +1,180 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/README.md'
+      - '**/README'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**/README.md'
+      - '**/README'
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: task_manager_db
+          POSTGRES_USER: task_manager_user
+          POSTGRES_PASSWORD: task_manager_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U task_manager_user -d task_manager_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      POSTGRES_DB: task_manager_db
+      POSTGRES_USER: task_manager_user
+      POSTGRES_PASSWORD: task_manager_password
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      SECRET_KEY: ci-test-secret-key-change-in-production
+      DEBUG: 'False'
+      NODE_ENV: test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Python dependencies
+        working-directory: apps/api
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH="$HOME/.cargo/bin:$PATH"
+          uv sync --no-dev
+
+      - name: Lint API
+        working-directory: apps/api
+        run: uv run ruff check .
+
+      - name: Lint Web
+        run: pnpm run lint --filter=web
+
+      - name: Type check API
+        working-directory: apps/api
+        run: uv run mypy .
+        continue-on-error: true
+
+      - name: Type check Web
+        run: pnpm run check-types --filter=web
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Run API migrations
+        working-directory: apps/api
+        env:
+          DATABASE_URL: postgresql://task_manager_user:task_manager_password@localhost:5432/task_manager_db
+          PATH: ${{ env.PATH }}:$HOME/.cargo/bin
+        run: |
+          export PATH="$HOME/.cargo/bin:$PATH"
+          uv run python manage.py migrate --noinput
+
+      - name: API unit tests
+        working-directory: apps/api
+        env:
+          DATABASE_URL: postgresql://task_manager_user:task_manager_password@localhost:5432/task_manager_db
+          PATH: ${{ env.PATH }}:$HOME/.cargo/bin
+        run: |
+          export PATH="$HOME/.cargo/bin:$PATH"
+          uv run pytest apps/ -v
+
+      - name: Web unit tests
+        run: pnpm run test --filter=web -- --run
+
+      - name: API E2E tests
+        working-directory: apps/api
+        env:
+          DATABASE_URL: postgresql://task_manager_user:task_manager_password@localhost:5432/task_manager_db
+          PATH: ${{ env.PATH }}:$HOME/.cargo/bin
+        run: |
+          export PATH="$HOME/.cargo/bin:$PATH"
+          uv run pytest tests/e2e/ -v
+
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: [ci]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    env:
+      # Required: set repo secret DEPLOY_APP_DIR (e.g. /root/miro-dev/digisasy-task-manager)
+      DEPLOY_APP_DIR: ${{ secrets.DEPLOY_APP_DIR }}
+    steps:
+      - name: Prepare SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          sed -i 's/\r$//' ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+      - name: Check SSH config
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          DEPLOY_APP_DIR: ${{ secrets.DEPLOY_APP_DIR }}
+        run: |
+          echo "SSH_USER length: ${#SSH_USER}"
+          echo "SSH_HOST length: ${#SSH_HOST}"
+          echo "DEPLOY_APP_DIR length: ${#DEPLOY_APP_DIR}"
+          echo "DEPLOY_APP_DIR set: $([ -n "$DEPLOY_APP_DIR" ] && echo yes || echo no)"
+      - name: Deploy via SSH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          DEPLOY_APP_DIR: ${{ secrets.DEPLOY_APP_DIR }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$DEPLOY_APP_DIR" ]; then
+            echo "::error::SSH_HOST, SSH_USER, and DEPLOY_APP_DIR secrets must be set"
+            exit 1
+          fi
+          REMOTE_DIR="$DEPLOY_APP_DIR"
+          REPO_URL="https://github.com/${GITHUB_REPO}.git"
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=30 \
+            -i ~/.ssh/deploy_key \
+            "$SSH_USER@$SSH_HOST" bash -s << REMOTE_SCRIPT
+          export DEPLOY_APP_DIR="$REMOTE_DIR"
+          export REPO_URL="$REPO_URL"
+          TARGET_DIR="$REMOTE_DIR"
+          if [ -d "\$TARGET_DIR/.git" ]; then
+            echo "Repository exists, updating..."
+            cd "\$TARGET_DIR" || exit 1
+            git fetch origin && git reset --hard origin/main
+          else
+            echo "Repository not found, cloning..."
+            mkdir -p "\$(dirname "\$TARGET_DIR")"
+            git clone "\$REPO_URL" "\$TARGET_DIR" || exit 1
+            cd "\$TARGET_DIR" || exit 1
+          fi
+          docker compose -f docker-compose.prod.yml up -d --build
+          sleep 5
+          curl -sf 'http://localhost:8000/api' || exit 1
+          REMOTE_SCRIPT

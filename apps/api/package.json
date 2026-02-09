@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "uv run python manage.py runserver 0.0.0.0:8000",
+    "dev:e2e": "node scripts/start-e2e.mjs",
     "migrate": "uv run python manage.py migrate --noinput",
     "seed": "uv run python manage.py seed_admin",
     "gen-schema": "uv run python manage.py spectacular --file openapi.yml",
     "build": "echo no build",
-    "lint": "echo no lint",
-    "check-types": "echo no check-types"
+    "lint": "uv run ruff check .",
+    "check-types": "uv run mypy .",
+    "test": "uv run python -m pytest apps/ -v",
+    "test:e2e": "uv run python -m pytest tests/e2e/ -v"
   }
 }
