@@ -31,7 +31,8 @@ services:
       - NODE_ENV=production
       - DEBUG=${DEBUG:-False}
       - SECRET_KEY=${SECRET_KEY:-django-insecure-dev-change-in-production}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,0.0.0.0}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,0.0.0.0,srv989705.hstgr.cloud}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS:-http://srv989705.hstgr.cloud:8000}
       - POSTGRES_DB=${POSTGRES_DB:-task_manager_db}
       - POSTGRES_USER=${POSTGRES_USER:-task_manager_user}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-task_manager_password}
