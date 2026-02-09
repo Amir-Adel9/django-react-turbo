@@ -60,15 +60,17 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
 
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Install Python dependencies
         working-directory: apps/api
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          export PATH="$HOME/.cargo/bin:$PATH"
-          uv sync --no-dev
+        run: uv sync --no-dev
 
       - name: Build
         run: pnpm run build
@@ -77,19 +79,13 @@ jobs:
         working-directory: apps/api
         env:
           DATABASE_URL: postgresql://task_manager_user:task_manager_password@localhost:5432/task_manager_db
-          PATH: ${{ env.PATH }}:$HOME/.cargo/bin
-        run: |
-          export PATH="$HOME/.cargo/bin:$PATH"
-          uv run python manage.py migrate --noinput
+        run: uv run python manage.py migrate --noinput
 
       - name: API unit tests
         working-directory: apps/api
         env:
           DATABASE_URL: postgresql://task_manager_user:task_manager_password@localhost:5432/task_manager_db
-          PATH: ${{ env.PATH }}:$HOME/.cargo/bin
-        run: |
-          export PATH="$HOME/.cargo/bin:$PATH"
-          uv run pytest apps/ -v
+        run: uv run pytest apps/ -v
 
       - name: Web unit tests
         run: pnpm run test --filter=web -- --run
@@ -98,10 +94,7 @@ jobs:
         working-directory: apps/api
         env:
           DATABASE_URL: postgresql://task_manager_user:task_manager_password@localhost:5432/task_manager_db
-          PATH: ${{ env.PATH }}:$HOME/.cargo/bin
-        run: |
-          export PATH="$HOME/.cargo/bin:$PATH"
-          uv run pytest tests/e2e/ -v
+        run: uv run pytest tests/e2e/ -v
 
   deploy:
     name: Deploy to VPS
