@@ -28,6 +28,10 @@ def set_auth_cookies(response, *, access: str | None = None, refresh: str | None
 
 
 def clear_auth_cookies(response):
-    response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE"], path="/")
-    response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"], path="/")
+    opts = {
+        "path": "/",
+        "samesite": settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
+    }
+    response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE"], **opts)
+    response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"], **opts)
     return response
