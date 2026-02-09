@@ -1,4 +1,6 @@
+from django.db.models import Count, Q
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -7,7 +9,7 @@ from rest_framework.response import Response
 from .filters import TaskFilter
 from .models import Task
 from .pagination import TaskPagination
-from .serializers import TaskSerializer, TaskCreateSerializer
+from .serializers import TaskSerializer, TaskCreateSerializer, TaskStatsSerializer
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -29,10 +31,13 @@ class TaskViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @extend_schema(responses=TaskStatsSerializer, description='Task counts for the current user (total, completed, pending).')
     @action(detail=False, methods=['get'], url_path='stats')
     def stats(self, request):
-        qs = Task.objects.filter(user=request.user)
-        total = qs.count()
-        completed = qs.filter(status=Task.Status.COMPLETED).count()
-        pending = qs.exclude(status=Task.Status.COMPLETED).count()
-        return Response({'total': total, 'completed': completed, 'pending': pending})
+        qs = self.get_queryset()
+        agg = qs.aggregate(
+            total=Count('id'),
+            completed=Count('id', filter=Q(status=Task.Status.COMPLETED)),
+        )
+        agg['pending'] = agg['total'] - agg['completed']
+        return Response(agg)

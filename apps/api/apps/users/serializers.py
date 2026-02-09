@@ -21,11 +21,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         email = data.get("email")
         if email and User.objects.filter(email=User.objects.normalize_email(email)).exists():
             raise serializers.ValidationError({"email": "A user with this email already exists."})
-        mock_user = type("MockUser", (), {
-            "username": "", "first_name": data["name"], "last_name": "", "email": data["email"]
-        })()
+        # Use an unsaved User instance so Django's validators (e.g. UserAttributeSimilarityValidator) can use _meta
+        user_for_validation = User(
+            email=data.get("email", ""),
+            name=data.get("name", ""),
+            first_name=data.get("name", ""),
+            last_name="",
+        )
         try:
-            validate_password(data["password"], user=mock_user)
+            validate_password(data["password"], user=user_for_validation)
         except DjangoValidationError as e:
             raise serializers.ValidationError({"password": e.messages})
         return data

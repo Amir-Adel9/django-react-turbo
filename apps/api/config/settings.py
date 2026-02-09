@@ -17,10 +17,8 @@ env = environ.Env()
 # Read .env from the root directory (2 levels up from apps/api/)
 environ.Env.read_env(os.path.join(BASE_DIR.parent.parent, '.env'))
 
-SECRET_KEY = env(
-    'SECRET_KEY',
-    default='django-insecure-dev-only-change-in-production',
-)
+# Defaults match .env.example so the app runs without .env (convenience for new clones).
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-dev-change-in-production')
 DEBUG = env.bool('DEBUG', default=True)
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '0.0.0.0'])
 
@@ -56,7 +54,7 @@ SIMPLE_JWT = {
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'corsheaders',
     'drf_spectacular',
     'django.contrib.auth',
@@ -109,6 +107,7 @@ if env('DATABASE_URL', default=None):
         'default': dj_database_url.parse(env('DATABASE_URL'), conn_max_age=600),
     }
 else:
+    # Defaults match .env.example (run without .env when using docker-compose.dev.yml).
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',

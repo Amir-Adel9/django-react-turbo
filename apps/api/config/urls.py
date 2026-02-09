@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, re_path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-
+from django.conf import settings
 from users.views import (
     CookieTokenRefreshView,
     CustomTokenObtainPairView,
@@ -10,8 +10,6 @@ from users.views import (
 )
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-
     # OpenAPI schema (for gen-schema and api-contract)
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     re_path(
@@ -28,3 +26,8 @@ urlpatterns = [
 
     path('api/tasks/', include('tasks.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path("admin/", admin.site.urls),
+    ]

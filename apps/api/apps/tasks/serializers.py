@@ -13,3 +13,9 @@ class TaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ("title", "description", "status")
+
+
+class TaskStatsSerializer(serializers.Serializer):
+    total = serializers.IntegerField(read_only=True)
+    completed = serializers.IntegerField(read_only=True)
+    pending = serializers.IntegerField(read_only=True)
