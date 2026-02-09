@@ -152,6 +152,18 @@ jobs:
             cd "\$TARGET_DIR" || exit 1
           fi
           docker compose -f docker-compose.prod.yml up -d --build
-          sleep 5
-          curl -sf 'http://localhost:8000/api' || exit 1
+          echo "Waiting for services to be healthy..."
+          sleep 10
+          # Retry health check up to 6 times (30 seconds total)
+          for i in {1..6}; do
+            echo "Health check attempt $i/6..."
+            if curl -sf 'http://localhost:8000/api/schema' > /dev/null; then
+              echo "Health check passed!"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Health check failed after 6 attempts"
+          docker compose -f docker-compose.prod.yml logs
+          exit 1
           REMOTE_SCRIPT
