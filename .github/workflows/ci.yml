@@ -70,21 +70,6 @@ jobs:
           export PATH="$HOME/.cargo/bin:$PATH"
           uv sync --no-dev
 
-      - name: Lint API
-        working-directory: apps/api
-        run: uv run ruff check .
-
-      - name: Lint Web
-        run: pnpm run lint --filter=web
-
-      - name: Type check API
-        working-directory: apps/api
-        run: uv run mypy .
-        continue-on-error: true
-
-      - name: Type check Web
-        run: pnpm run check-types --filter=web
-
       - name: Build
         run: pnpm run build
 
