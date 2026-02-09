@@ -16,14 +16,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ('email', 'name', 'password', 'password_confirm')
 
     def validate(self, data):
-        if data['password'] != data['password_confirm']:
+        if data["password"] != data["password_confirm"]:
             raise serializers.ValidationError({"password": "Passwords do not match."})
-        # Run Django's AUTH_PASSWORD_VALIDATORS (length, similarity, common, numeric)
-        mock_user = type('MockUser', (), {
-            'username': '', 'first_name': data['name'], 'last_name': '', 'email': data['email']
+        email = data.get("email")
+        if email and User.objects.filter(email=User.objects.normalize_email(email)).exists():
+            raise serializers.ValidationError({"email": "A user with this email already exists."})
+        mock_user = type("MockUser", (), {
+            "username": "", "first_name": data["name"], "last_name": "", "email": data["email"]
         })()
         try:
-            validate_password(data['password'], user=mock_user)
+            validate_password(data["password"], user=mock_user)
         except DjangoValidationError as e:
             raise serializers.ValidationError({"password": e.messages})
         return data
