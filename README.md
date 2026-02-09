@@ -21,6 +21,15 @@ Monorepo: **API** (Django + PostgreSQL) and **Web** (React + Vite). No env files
 
 **[Live Demo](http://srv989705.hstgr.cloud:8000/)** — Deployed on my personal VPS. Try it out.
 
+<a href="http://srv989705.hstgr.cloud:8000/" target="_blank" rel="noopener noreferrer">
+  <img
+    width="1920"
+    height="957"
+    alt="image"
+    src="https://github.com/user-attachments/assets/84be49fc-90f0-4fae-a5be-dbd13c8a8cd3"
+  />
+</a>
+
 ## Principles
 
 - **Monorepo:** [Turborepo](https://turbo.build/repo) with `apps/api` (Django + PostgreSQL), `apps/web` (React + Vite), and `packages/api-contract` (OpenAPI schema and generated types for the frontend).
