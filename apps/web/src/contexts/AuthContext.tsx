@@ -3,17 +3,12 @@ import {
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,
-} from "@/store/authApi";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setLoading, setUser } from "@/store/authSlice";
-import type { User } from "@/api/types";
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  type ReactNode,
-} from "react";
-import { createContext } from "react";
+} from '@/store/authApi';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setLoading, setUser } from '@/store/authSlice';
+import type { User } from '@/api/types';
+import { useCallback, useContext, useEffect, type ReactNode } from 'react';
+import { createContext } from 'react';
 
 interface AuthContextValue {
   user: User | null;
@@ -23,7 +18,7 @@ interface AuthContextValue {
     email: string,
     name: string,
     password: string,
-    password_confirm: string
+    password_confirm: string,
   ) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<boolean>;
@@ -53,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await loginMutation({ email, password }).unwrap();
       dispatch(setUser(res.user));
     },
-    [loginMutation, dispatch]
+    [loginMutation, dispatch],
   );
 
   const register = useCallback(
@@ -61,16 +56,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email: string,
       name: string,
       password: string,
-      password_confirm: string
+      password_confirm: string,
     ) => {
-      await registerMutation({ email, name, password, password_confirm }).unwrap();
+      await registerMutation({
+        email,
+        name,
+        password,
+        password_confirm,
+      }).unwrap();
       await login(email, password);
     },
-    [registerMutation, login]
+    [registerMutation, login],
   );
 
   const logout = useCallback(async () => {
-    await logoutMutation().unwrap().catch(() => {});
+    await logoutMutation()
+      .unwrap()
+      .catch(() => {});
     dispatch(setUser(null));
   }, [logoutMutation, dispatch]);
 
@@ -94,13 +96,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refresh,
   };
 
-  return (
-    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
-  if (ctx == null) throw new Error("useAuth must be used within AuthProvider");
+  if (ctx == null) throw new Error('useAuth must be used within AuthProvider');
   return ctx;
 }

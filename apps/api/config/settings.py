@@ -6,7 +6,7 @@ from datetime import timedelta
 import environ  # type: ignore[import-untyped]
 import dj_database_url  # type: ignore[import-untyped]
 
-# Right$Hero
+
 # Build paths: BASE_DIR is apps/api/
 BASE_DIR = Path(__file__).resolve().parent.parent
 
