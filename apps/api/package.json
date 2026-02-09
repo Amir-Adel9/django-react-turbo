@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "install": "uv sync",
     "dev": "uv run python manage.py runserver 0.0.0.0:8000",
     "dev:e2e": "node scripts/start-e2e.mjs",
     "migrate": "uv run python manage.py migrate --noinput",
