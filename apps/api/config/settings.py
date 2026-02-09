@@ -14,13 +14,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 env = environ.Env()
-# Read .env from the root directory (2 levels up from apps/api/)
-environ.Env.read_env(os.path.join(BASE_DIR.parent.parent, '.env'))
+# Optional .env: only read if present (defaults work with no .env in dev or prod).
+_env_file = BASE_DIR.parent.parent / '.env'
+if _env_file.exists():
+    environ.Env.read_env(_env_file)
 
 # Defaults match .env.example so the app runs without .env (convenience for new clones).
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-dev-change-in-production')
 DEBUG = env.bool('DEBUG', default=True)
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '0.0.0.0'])
+
+# Fail fast in production if SECRET_KEY is missing or still the default.
+from config.validation import validate_env  # noqa: E402
+validate_env(DEBUG, SECRET_KEY)
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
