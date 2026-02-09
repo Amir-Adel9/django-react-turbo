@@ -8,7 +8,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer
+from drf_spectacular.utils import extend_schema
+
+from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer, MeSerializer
 from .cookies import set_auth_cookies, clear_auth_cookies
 
 
@@ -21,6 +23,16 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+
+
+class MeView(APIView):
+    """Return current user from access_token cookie (same shape as Register: email, name)."""
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(responses={200: MeSerializer})
+    def get(self, request):
+        serializer = MeSerializer(request.user)
+        return Response(serializer.data)
 
 
 class LogoutView(APIView):

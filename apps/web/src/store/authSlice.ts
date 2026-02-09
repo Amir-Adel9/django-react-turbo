@@ -1,4 +1,4 @@
-import type { User } from "@/api/types";
+import type { User } from '@/shared/api/api.types';
 import { createSlice } from "@reduxjs/toolkit";
 
 const USER_STORAGE_KEY = "auth_user";
@@ -24,7 +24,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: getStoredUser() as User | null,
-    loading: true,
+    loading: false,
   },
   reducers: {
     setUser: (state, action: { payload: User | null }) => {

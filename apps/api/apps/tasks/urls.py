@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import TaskViewSet
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register(r'', TaskViewSet, basename='task')
 
 urlpatterns = [

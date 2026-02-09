@@ -43,6 +43,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
 
+class MeSerializer(serializers.ModelSerializer):
+    """Read-only serializer for GET /api/auth/me (same shape as Register for API contract)."""
+
+    class Meta:
+        model = User
+        fields = ('email', 'name')
+        read_only_fields = ('email', 'name')
+
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)

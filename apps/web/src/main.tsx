@@ -1,17 +1,17 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { Provider } from "react-redux";
-import { store } from "@/store";
-import { AuthProvider } from "@/contexts/AuthContext";
-import "./index.css";
-import App from "./App";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Toaster } from 'sonner';
+import { Provider } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
+import { store } from '@/store';
+import { router } from '@/routes/router';
+import './index.css';
 
-createRoot(document.getElementById("root")!).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <RouterProvider router={router} />
+      <Toaster richColors position='bottom-right' />
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

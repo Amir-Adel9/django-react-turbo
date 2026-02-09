@@ -123,6 +123,10 @@ yarn exec turbo link
 pnpm exec turbo link
 ```
 
+### Default admin (API)
+
+After migrating the API, run `python manage.py seed_admin` (or use the Docker image, which runs it on startup). Default admin: **admin@example.com** / **admin123!** (set `ADMIN_SEED_PASSWORD` in production).
+
 ## Useful Links
 
 Learn more about the power of Turborepo:

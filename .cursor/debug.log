@@ -1,0 +1,17 @@
+{"location":"loader.ts:authLoader","message":"authLoader entry","data":{},"timestamp":1770613627528,"hypothesisId":"H2"}
+{"location":"client.ts:fetchWithRefresh","message":"/me response","data":{"status":200,"url":"http://localhost:5173/api/auth/me/"},"timestamp":1770613627568,"hypothesisId":"H2"}
+{"location":"loader.ts:authLoader","message":"authLoader /me success","data":{"hasData":true},"timestamp":1770613627579,"hypothesisId":"H3"}
+{"location":"AuthContext.tsx:logout","message":"logout called","data":{},"timestamp":1770613629185,"hypothesisId":"H1"}
+{"location":"AuthContext.tsx:logout","message":"logout done","data":{},"timestamp":1770613629227,"hypothesisId":"H1","runId":"post-fix"}
+{"location":"LoginPage.tsx","message":"user set navigate to from once","data":{"from":"/"},"timestamp":1770613632720,"hypothesisId":"H2","runId":"post-fix"}
+{"location":"loader.ts:authLoader","message":"authLoader entry","data":{},"timestamp":1770613632723,"hypothesisId":"H2"}
+{"location":"LoginPage.tsx:onSubmit","message":"login success navigating","data":{"from":"/"},"timestamp":1770613632725,"hypothesisId":"H2"}
+{"location":"loader.ts:authLoader","message":"authLoader entry","data":{},"timestamp":1770613632726,"hypothesisId":"H2"}
+{"location":"client.ts:fetchWithRefresh","message":"/me response","data":{"status":200,"url":"http://localhost:5173/api/auth/me/"},"timestamp":1770613632750,"hypothesisId":"H2"}
+{"location":"loader.ts:authLoader","message":"authLoader /me success","data":{"hasData":true},"timestamp":1770613632751,"hypothesisId":"H3"}
+{"location":"client.ts:fetchWithRefresh","message":"/me response","data":{"status":200,"url":"http://localhost:5173/api/auth/me/"},"timestamp":1770613632774,"hypothesisId":"H2"}
+{"location":"loader.ts:authLoader","message":"authLoader /me success","data":{"hasData":true},"timestamp":1770613632775,"hypothesisId":"H3"}
+{"location":"AuthContext.tsx:logout","message":"logout called","data":{},"timestamp":1770613643033,"hypothesisId":"H1"}
+{"location":"AuthContext.tsx:logout","message":"logout done","data":{},"timestamp":1770613643185,"hypothesisId":"H1","runId":"post-fix"}
+{"location":"LoginPage.tsx:onSubmit","message":"login success navigating","data":{"from":"/"},"timestamp":1770613658785,"hypothesisId":"H2"}
+{"location":"LoginPage.tsx","message":"user set navigate to from once","data":{"from":"/"},"timestamp":1770613658775,"hypothesisId":"H2","runId":"post-fix"}

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "uv run python manage.py runserver 0.0.0.0:8000",
     "migrate": "uv run python manage.py migrate --noinput",
+    "seed": "uv run python manage.py seed_admin",
     "gen-schema": "uv run python manage.py spectacular --file openapi.yml",
     "build": "echo no build",
     "lint": "echo no lint",

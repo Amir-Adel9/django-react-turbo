@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node scripts/copy-schema.mjs",
     "generate": "openapi-typescript ./openapi.yml -o ./src/generated/schema.d.ts"
   },
   "dependencies": {},

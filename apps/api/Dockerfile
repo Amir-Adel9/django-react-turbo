@@ -22,4 +22,5 @@ RUN uv run python manage.py collectstatic --noinput || true
 EXPOSE 8000
 
 CMD uv run python manage.py migrate --noinput && \
+    uv run python manage.py seed_admin && \
     uv run gunicorn config.wsgi:application --bind 0.0.0.0:8000
