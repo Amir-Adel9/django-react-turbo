@@ -132,6 +132,7 @@ else:
     }
 
 # CORS: for standalone frontend dev (Vite on 5173 calling API on 8000). No Nginx in dev.
+# In production, frontend and API are on same domain via nginx, so CORS is less critical.
 CORS_ALLOW_CREDENTIALS = True
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
@@ -147,8 +148,29 @@ if DEBUG:
         'http://127.0.0.1:5174',
     ]
 else:
+    # Production: CORS and CSRF should be configured via environment variables
+    # For same-domain setup (nginx proxy), CORS_ALLOWED_ORIGINS can be empty
+    # but CSRF_TRUSTED_ORIGINS should include your domain(s)
     CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
+    # CSRF_TRUSTED_ORIGINS is critical - must include your production domain(s)
+    # Example: CSRF_TRUSTED_ORIGINS=https://yourdomain.com,http://yourdomain.com
     CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
+    
+    # Auto-add ALLOWED_HOSTS to CSRF_TRUSTED_ORIGINS if empty (helps with debugging)
+    # DRF views are CSRF-exempt, but this helps with browser requests
+    if not CSRF_TRUSTED_ORIGINS and ALLOWED_HOSTS:
+        import logging
+        logger = logging.getLogger(__name__)
+        # Try to infer from ALLOWED_HOSTS (add http:// prefix)
+        inferred_origins = [f'http://{host}' for host in ALLOWED_HOSTS if host not in ['localhost', '127.0.0.1', '0.0.0.0']]
+        if inferred_origins:
+            CSRF_TRUSTED_ORIGINS = inferred_origins
+            logger.info(f"Auto-configured CSRF_TRUSTED_ORIGINS from ALLOWED_HOSTS: {CSRF_TRUSTED_ORIGINS}")
+        else:
+            logger.warning(
+                "CSRF_TRUSTED_ORIGINS is empty in production. "
+                "Set CSRF_TRUSTED_ORIGINS environment variable with your domain(s)."
+            )
 
 
 # Password validation
